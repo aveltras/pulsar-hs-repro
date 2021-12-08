@@ -1,0 +1,24 @@
+load(
+    "@rules_haskell//haskell:defs.bzl",
+    "haskell_binary",
+    "haskell_toolchain_library",
+)
+
+haskell_toolchain_library(name="base")
+haskell_toolchain_library(name="bytestring")
+haskell_toolchain_library(name="pulsar-client-hs")
+haskell_toolchain_library(name="resourcet")
+haskell_toolchain_library(name="transformers")
+
+haskell_binary(
+    name = "producer",
+    srcs = ["src/Main.hs"],
+    deps = [
+        "base",
+        "bytestring",
+        "pulsar-client-hs",
+        "resourcet",
+        "transformers",
+    ],
+    visibility = ["//visibility:public"],
+)
