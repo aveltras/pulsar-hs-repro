@@ -6,6 +6,7 @@ load(
 )
 
 haskell_toolchain_library(name="base")
+haskell_toolchain_library(name="ghc-typelits-natnormalise")
 haskell_toolchain_library(name="polysemy")
 haskell_toolchain_library(name="polysemy-plugin")
 haskell_toolchain_library(name="pulsar-client-hs")
@@ -16,10 +17,17 @@ ghc_plugin(
     deps = ["polysemy", "polysemy-plugin"],
 )
 
+ghc_plugin(
+    name = "ghc_typelits_natnormalise",
+    module = "GHC.TypeLits.Normalise",
+    deps = ["ghc-typelits-natnormalise"],
+)
+
 haskell_binary(
     name = "example",
     srcs = ["src/Main.hs"],
-    plugins = ["polysemy_plugin"], # commenting this fixes the build
+    # plugins = [":polysemy_plugin"], # commenting this fixes the build
+    # plugins = [":ghc_typelits_natnormalise"], # commenting this fixes the build
     deps = [
         "base",
         "polysemy",

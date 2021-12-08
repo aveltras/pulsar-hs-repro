@@ -26,6 +26,7 @@ let
     (self: super: {
       compiler = super.haskellPackages.ghcWithPackages (p: with p; [
         base
+        ghc-typelits-natnormalise
         polysemy
         polysemy-plugin
         pulsar-client-hs
