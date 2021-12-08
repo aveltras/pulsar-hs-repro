@@ -30,8 +30,6 @@ haskell_binary(
     # plugins = [":ghc_typelits_natnormalise"], # commenting this fixes the build
     deps = [
         "base",
-        "polysemy",
-        "polysemy-plugin",
         "pulsar-client-hs",
     ],
     visibility = ["//visibility:public"],
