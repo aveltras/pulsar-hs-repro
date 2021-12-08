@@ -1,24 +1,30 @@
 load(
     "@rules_haskell//haskell:defs.bzl",
+    "ghc_plugin",
     "haskell_binary",
     "haskell_toolchain_library",
 )
 
 haskell_toolchain_library(name="base")
-haskell_toolchain_library(name="bytestring")
+haskell_toolchain_library(name="polysemy")
+haskell_toolchain_library(name="polysemy-plugin")
 haskell_toolchain_library(name="pulsar-client-hs")
-haskell_toolchain_library(name="resourcet")
-haskell_toolchain_library(name="transformers")
+
+ghc_plugin(
+    name = "polysemy_plugin",
+    module = "Polysemy.Plugin",
+    deps = ["polysemy", "polysemy-plugin"],
+)
 
 haskell_binary(
-    name = "producer",
+    name = "example",
     srcs = ["src/Main.hs"],
+    plugins = ["polysemy_plugin"], # commenting this fixes the build
     deps = [
         "base",
-        "bytestring",
+        "polysemy",
+        "polysemy-plugin",
         "pulsar-client-hs",
-        "resourcet",
-        "transformers",
     ],
     visibility = ["//visibility:public"],
 )

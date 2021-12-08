@@ -7,15 +7,16 @@ let
 
   localOverlays = [
 
-    # make ghc8107 the default package set for haskell
     (self: super: let
       pulsarHsSrc = githubTarball "hetchr" "pulsar-hs" "a3cdf80b82019a8e86f38551faebce82cae9f136";
       pulsarHs = import "${pulsarHsSrc}/pulsar-client-hs" { nixpkgs = super; compiler = "ghc8107";};
     in {
-      # to see the versions of the packages currently in use
-      # visit https://raw.githubusercontent.com/NixOS/nixpkgs/${NIXPKGS_COMMIT_HERE}/pkgs/development/haskell-modules/hackage-packages.nix
       haskellPackages = super.haskell.packages.ghc8107.override {
-        overrides = hself: hsuper: {
+        overrides = hself: hsuper: let
+          polysemySrc = githubTarball "polysemy-research" "polysemy" "v1.7.0.0";
+        in {
+          polysemy = self.haskell.lib.unmarkBroken (hsuper.callCabal2nix "polysemy" polysemySrc {});
+          polysemy-plugin = self.haskell.lib.unmarkBroken (hsuper.callCabal2nix "polysemy-plugin" "${polysemySrc}/polysemy-plugin" {});
           pulsar-client-hs = pulsarHs.pulsar-client-hs;
         };
       };
@@ -25,10 +26,9 @@ let
     (self: super: {
       compiler = super.haskellPackages.ghcWithPackages (p: with p; [
         base
-        bytestring
+        polysemy
+        polysemy-plugin
         pulsar-client-hs
-        resourcet
-        transformers
       ]);
     })
   ];
