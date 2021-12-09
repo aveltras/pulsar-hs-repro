@@ -18,6 +18,7 @@ let
           polysemy = self.haskell.lib.unmarkBroken (hsuper.callCabal2nix "polysemy" polysemySrc {});
           polysemy-plugin = self.haskell.lib.unmarkBroken (hsuper.callCabal2nix "polysemy-plugin" "${polysemySrc}/polysemy-plugin" {});
           pulsar-client-hs = pulsarHs.pulsar-client-hs;
+          pulsar-hs-repro = hsuper.callCabal2nix "pulsar-hs-repro" ./. {};
         };
       };
     })
