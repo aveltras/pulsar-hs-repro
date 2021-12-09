@@ -1,4 +1,5 @@
-Using the following library break when using ghc_plugin (the library uses FFI).
+Using GHC plugins in this repo breaks the build.
+Plugins can be switched on and off in `BUILD.bazel` or `pulsar-hs-repro.cabal`
 
 [pulsar-hs](https://github.com/hetchr/pulsar-hs)
 
